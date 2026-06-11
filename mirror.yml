@@ -17,12 +17,13 @@ assets:
     - "^opencode-linux-x64\\.tar\\.gz$"
   linux/arm64:
     - "^opencode-linux-arm64\\.tar\\.gz$"
-  # Baseline (no-AVX2) x64 build. opencode is a bun-compiled binary; the
-  # non-baseline darwin-x64 uses AVX2, which Rosetta 2 does not implement →
-  # SIGILL (exit 132) under the arm64 macos-14 runner (no native Intel runner
-  # exists). Baseline runs under Rosetta AND natively on every Intel Mac.
-  darwin/amd64:
-    - "^opencode-darwin-x64-baseline\\.zip$"
+  # darwin/amd64 (Intel macOS) is intentionally NOT mirrored. opencode is a
+  # bun-compiled binary, and bun SIGILLs (exit 132) under Rosetta 2 — proven
+  # across the non-baseline, -baseline, and BUN_JSC_useJIT=0 variants; it is a
+  # native-startup illegal instruction, not a JIT/AVX2 issue. GitHub retired
+  # native Intel macOS runners, so the slice cannot be CI-validated (a native
+  # Go/C binary like yq DOES pass darwin/amd64 via Rosetta — this is bun-only).
+  # The Intel build runs fine on real Intel Macs; it just can't be tested here.
   darwin/arm64:
     - "^opencode-darwin-arm64\\.zip$"
   windows/amd64:
@@ -71,11 +72,8 @@ platforms:
     runner: ubuntu-latest
   linux/arm64:
     runner: ubuntu-24.04-arm
-  # darwin/amd64 (Intel) tested on the arm64 macos-14 runner via Rosetta 2 — the
-  # arm64 ocx execs the x86_64 binary and macOS translates it. No arch prefix
-  # (would mis-target the arm64 ocx → "Bad CPU type"); native macos-13 deadlocks.
-  darwin/amd64:
-    runner: macos-14
+  # darwin/amd64 omitted on purpose — see the assets block. bun binaries can't
+  # run under Rosetta 2, and no native Intel macOS runner exists to test it.
   darwin/arm64:
     runner: macos-14
     shell: bash
