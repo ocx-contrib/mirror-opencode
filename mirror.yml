@@ -17,8 +17,12 @@ assets:
     - "^opencode-linux-x64\\.tar\\.gz$"
   linux/arm64:
     - "^opencode-linux-arm64\\.tar\\.gz$"
+  # Baseline (no-AVX2) x64 build. opencode is a bun-compiled binary; the
+  # non-baseline darwin-x64 uses AVX2, which Rosetta 2 does not implement →
+  # SIGILL (exit 132) under the arm64 macos-14 runner (no native Intel runner
+  # exists). Baseline runs under Rosetta AND natively on every Intel Mac.
   darwin/amd64:
-    - "^opencode-darwin-x64\\.zip$"
+    - "^opencode-darwin-x64-baseline\\.zip$"
   darwin/arm64:
     - "^opencode-darwin-arm64\\.zip$"
   windows/amd64:
