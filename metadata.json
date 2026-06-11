@@ -11,7 +11,8 @@
       "key": "OPENCODE_DISABLE_AUTOUPDATE",
       "type": "constant",
       "required": true,
-      "value": "true"
+      "value": "true",
+      "visibility": "public"
     }
   ]
 }
