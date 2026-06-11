@@ -1,0 +1,17 @@
+{
+  "type": "bundle", "version": 1, "env": [
+    {
+      "key": "PATH",
+      "type": "path",
+      "required": true,
+      "value": "${installPath}",
+      "visibility": "public"
+    },
+    {
+      "key": "OPENCODE_DISABLE_AUTOUPDATE",
+      "type": "constant",
+      "required": true,
+      "value": "true"
+    }
+  ]
+}
